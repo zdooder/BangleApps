@@ -85,7 +85,7 @@ Bangle.on('step', function(up) {
   } else {
     steps = up;
   }
-}
+});
 
 Bangle.loadWidgets();
 Bangle.drawWidgets();
