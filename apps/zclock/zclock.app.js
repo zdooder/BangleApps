@@ -80,8 +80,12 @@ Bangle.on('lcdPower', on=>{
 });
 
 Bangle.on('step', function(up) {
-  steps = up;
-});
+  if ( "activepedom" in WIDGETS ) {
+    steps = WIDGETS.activepedom.getSteps();
+  } else {
+    steps = up;
+  }
+}
 
 Bangle.loadWidgets();
 Bangle.drawWidgets();
