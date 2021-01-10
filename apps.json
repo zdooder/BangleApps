@@ -2550,5 +2550,17 @@
     {"name":"hrrawexp.app.js","url":"app.js"},
     {"name":"hrrawexp.img","url":"app-icon.js","evaluate":true}
   ]
+},
+{ "id": "zclock",
+  "name": "zclock face",
+  "shortName": "zclock",
+  "icon": "app.png",
+  "version": "0.01",
+  "description": "custom clock face that does what I want",
+  "tags": "clock",
+  "storage": [
+	  {"name":"zclock.app.js","url":"zclock.app.js"},
+	  {"name":"zclock.img","url":"app-icon.js","evaluate":true}
+  ]
 }
 ]
