@@ -53,7 +53,7 @@
   { "id": "about",
     "name": "About",
     "icon": "app.png",
-    "version":"0.06",
+    "version":"0.07",
     "description": "Bangle.js About page - showing software version, stats, and a collaborative mural from the Bangle.js KickStarter backers",
     "tags": "tool,system",
     "allow_emulator":true,
@@ -171,7 +171,7 @@
   { "id": "setting",
     "name": "Settings",
     "icon": "settings.png",
-    "version":"0.22",
+    "version":"0.23",
     "description": "A menu for setting up Bangle.js",
     "tags": "tool,system",
     "readme": "README.md",
@@ -363,7 +363,7 @@
   { "id": "gpsrec",
     "name": "GPS Recorder",
     "icon": "app.png",
-    "version":"0.16",
+    "version":"0.17",
     "interface": "interface.html",
     "description": "Application that allows you to record a GPS track. Can run in background",
     "tags": "tool,outdoors,gps,widget",
@@ -946,7 +946,7 @@
     "name": "Assisted GPS Update (AGPS)",
     "icon": "app.png",
     "version":"0.01",
-    "description": "Downloads assisted GPS data to Bangle.js for faster GPS startup and more accurate fixes",
+    "description": "Downloads assisted GPS (AGPS) data to Bangle.js for faster GPS startup and more accurate fixes. **No app will be installed**, this just uploads new data to the GPS chip.",
     "custom": "custom.html",
     "tags": "tool,outdoors,agps",
     "type": "RAM",
@@ -1007,7 +1007,7 @@
   { "id": "widpedom",
     "name": "Pedometer widget",
     "icon": "widget.png",
-    "version":"0.10",
+    "version":"0.11",
     "description": "Daily pedometer widget",
     "tags": "widget",
     "type":"widget",
@@ -1153,7 +1153,7 @@
     "name": "Commandline-Clock",
     "shortName":"CLI-Clock",
     "icon": "app.png",
-    "version":"0.08",
+    "version":"0.11",
     "description": "Simple CLI-Styled Clock",
     "tags": "clock,cli,command,bash,shell",
     "type":"clock",
@@ -1341,7 +1341,7 @@
     "name": "Active Pedometer",
     "shortName":"Active Pedometer",
     "icon": "app.png",
-    "version":"0.06",
+    "version":"0.09",
     "description": "Pedometer that filters out arm movement and displays a step goal progress. Steps are saved to a daily file and can be viewed as graph.",
     "tags": "outdoors,widget",
      "readme": "README.md",
@@ -1394,7 +1394,7 @@
   "name": "Dev Stopwatch",
   "shortName":"Dev Stopwatch",
   "icon": "app.png",
-  "version":"0.01",
+  "version":"0.02",
   "description": "Stopwatch with 5 laps supported (cyclically replaced)",
   "tags": "stopwatch, chrono, timer, chronometer",
   "allow_emulator":true,
@@ -1553,7 +1553,7 @@
     "name": "BangleRun",
     "shortName": "BangleRun",
     "icon": "banglerun.png",
-    "version": "0.05",
+    "version": "0.09",
     "interface": "interface.html",
     "description": "An app for running sessions. Displays info and logs your run for later viewing.",
     "tags": "run,running,fitness,outdoors",
@@ -2021,7 +2021,7 @@
     "name": "Vertical watch face",
     "shortName":"Vertical Face",
     "icon": "app.png",
-    "version":"0.07",
+    "version":"0.08",
     "description": "A simple vertical watch face with the date. Heart rate monitor is toggled with BTN1",
     "tags": "clock",
     "type":"clock",
@@ -2139,12 +2139,12 @@
   { "id": "multiclock",
     "name": "Multi Clock",
     "icon": "multiclock.png",
-    "version":"0.07",
+    "version":"0.11",
     "description": "Clock with multiple faces - Big, Analogue, Digital, Text, Time-Date.\n Switch between faces with BTN1 & BTN3",
     "readme": "README.md",
     "tags": "clock",
     "type":"clock",
-    "allow_emulator":false,
+    "allow_emulator":true,
     "storage": [
       {"name":"multiclock.app.js","url":"clock.js"},
       {"name":"big.face.js","url":"big.js"},
@@ -2152,6 +2152,9 @@
       {"name":"digi.face.js","url":"digi.js"},
       {"name":"txt.face.js","url":"txt.js"},
       {"name":"timdat.face.js","url":"timdat.js"},
+      {"name":"ped.face.js","url":"ped.js"},
+      {"name":"gps.face.js","url":"gps.js"},
+      {"name":"osref.face.js","url":"osref.js"},
       {"name":"multiclock.img","url":"multiclock-icon.js","evaluate":true}
     ]
   },
@@ -2184,6 +2187,23 @@
     ],
     "data": [
       {"wildcard":"accelrec.?.csv" }
+    ]
+  },
+  { "id": "accellog",
+    "name": "Acceleration Logger",
+    "shortName":"Accel Log",
+    "icon": "app.png",
+    "version":"0.01",
+    "interface": "interface.html",
+    "description": "Logs XYZ acceleration data to a CSV file that can be downloaded to your PC",
+    "tags": "outdoor",
+    "readme": "README.md",
+    "storage": [
+      {"name":"accellog.app.js","url":"app.js"},
+      {"name":"accellog.img","url":"app-icon.js","evaluate":true}
+    ],
+    "data": [
+      {"wildcard":"accellog.?.csv" }
     ]
   },
   {
@@ -2295,7 +2315,7 @@
     "name": "File manager",
     "shortName":"FileManager",
     "icon": "icons8-filing-cabinet-48.png",
-    "version":"0.02",
+    "version":"0.03",
     "description": "Simple file manager, allows user to examine watch storage and display, load or delete individual files",
     "tags": "tools",
     "readme": "README.md",
@@ -2483,7 +2503,7 @@
 { "id": "dtlaunch",
   "name": "Desktop Launcher",
   "icon": "icon.png",
-  "version":"0.02",
+  "version":"0.03",
   "description": "Desktop style App Launcher with six apps per page - fast access if you have lots of apps installed.",
   "readme": "README.md",
   "tags": "tool,system,launcher",
@@ -2549,6 +2569,186 @@
   "storage": [
     {"name":"hrrawexp.app.js","url":"app.js"},
     {"name":"hrrawexp.img","url":"app-icon.js","evaluate":true}
+  ]
+},
+{ "id": "breath",
+  "name": "Breathing App",
+  "shortName":"Breathing App",
+  "icon": "app-icon.png",
+  "version":"0.01",
+  "description": "app to aid relaxation and train breath syncronicity using haptics and visualisation, also displays HR",
+  "tags": "tools,health",
+  "readme": "README.md",
+  "storage": [
+    {"name":"breath.app.js","url":"app.js"},
+    {"name":"breath.settings.json","url":"settings.json"},
+    {"name":"breath.img","url":"app-icon.js","evaluate":true}
+  ]
+},
+{ "id": "lazyclock",
+  "name": "Lazy Clock",
+  "icon": "lazyclock.png",
+  "version":"0.01",
+  "readme": "README.md",
+  "description": "Tells the time, roughly",
+  "tags": "clock",
+  "type":"clock",
+  "allow_emulator":true,
+  "storage": [
+    {"name":"lazyclock.app.js","url":"lazyclock-app.js"},
+    {"name":"lazyclock.img","url":"lazyclock-icon.js","evaluate":true}
+  ]
+},
+{ "id": "astral",
+  "name": "Astral Clock",
+  "icon": "app-icon.png",
+  "version":"0.02",
+  "readme": "README.md",
+  "description": "Clock that calculates and displays Alt Az positions of all planets, Sun as well as several other astronomy targets (customizable) and current Moon phase. Coordinates are calculated by GPS & time and onscreen compass assists orienting. See Readme before using.",
+  "tags": "clock",
+  "type":"clock",
+  "storage": [
+    {"name":"astral.app.js","url":"app.js"},
+    {"name":"astral.img","url":"app-icon.js","evaluate":true}
+  ]
+},
+{ "id": "alpinenav",
+  "name": "Alpine Nav",
+  "icon": "app-icon.png",
+  "version":"0.01",
+  "readme": "README.md",
+  "description": "App that performs GPS monitoring to track and display position relative to a given origin in realtime",
+  "tags": "outdoors,gps",
+  "storage": [
+    {"name":"alpinenav.app.js","url":"app.js"},
+    {"name":"alpinenav.img","url":"app-icon.js","evaluate":true}
+  ]
+},
+{ "id": "lifeclk",
+  "name": "Game of Life Clock",
+  "shortName":"Conway's Clock",
+  "icon": "app.png",
+  "version":"0.05",
+  "description": "Modification and clockification of Conway's Game of Life",
+  "tags": "clock",
+  "type" : "clock",
+  "readme": "README.md",
+  "storage": [
+    {"name":"lifeclk.app.js","url":"app.js"},
+    {"name":"lifeclk.img","url":"app-icon.js","evaluate":true}
+  ]
+},
+{ "id": "speedalt",
+  "name": "GPS Speedo and Altimeter",
+  "shortName":"GPS Speed Alt",
+  "icon": "app.png",
+  "version":"0.07",
+  "description": "GPS speed and altitude display. Designed for easy viewing and use during outdoor activities such as para-gliding, hang-gliding, sailing, cycling etc.",
+  "tags": "tool,outdoors",
+  "type":"app",
+  "allow_emulator":true,
+  "readme": "README.md",
+  "storage": [
+    {"name":"speedalt.app.js","url":"app.js"},
+    {"name":"speedalt.img","url":"app-icon.js","evaluate":true},
+    {"name":"speedalt.settings.js","url":"settings.js"}
+  ],
+ "data": [
+      {"name":"speedalt.json"}
+    ]
+},
+{ "id": "de-stress",
+  "name": "De-Stress",
+  "shortName":"De-Stress",
+  "icon": "app.png",
+  "version":"0.01",
+  "description": "Simple haptic heartbeat",
+  "storage": [
+    {"name":"de-stress.app.js","url":"app.js"},
+    {"name":"de-stress.img","url":"app-icon.js","evaluate":true}
+  ]
+},
+{ "id": "gpsservice",
+  "name": "Low power GPS Service",
+  "shortName":"GPS Service",
+  "icon": "gpsservice.png",
+  "version":"0.04",
+  "description": "low power GPS widget",
+  "tags": "gps outdoors navigation",
+  "readme": "README.md",
+  "storage": [
+    {"name":"gpsservice.app.js","url":"app.js"},
+    {"name":"gpsservice.settings.js","url":"settings.js"},
+    {"name":"gpsservice.settings.json","url":"settings.json"},
+    {"name":"gpsservice.wid.js","url":"widget.js"},
+    {"name":"gpsservice.img","url":"gpsservice-icon.js","evaluate":true}
+  ]
+},
+{ "id": "mclockplus",
+  "name": "Morph Clock+",
+  "shortName":"Morph Clock+",
+  "icon": "mclockplus.png",
+  "version":"1.0",
+  "description": "Morphing Clock with more readable seconds and date and additional stopwatch",
+  "tags": "clock",
+  "type": "clock",
+  "readme": "README.md",
+  "storage": [
+    {"name":"mclockplus.app.js","url":"mclockplus.app.js"},
+    {"name":"mclockplus.img","url":"mclockplus-icon.js","evaluate":true}
+  ]
+},
+{ "id": "intervals",
+  "name": "Intervals App",
+  "shortName":"Intervals",
+  "icon": "intervals.png",
+  "version":"0.01",
+  "description": "Intervals for training. It is possible to configure work time and rest time and number of sets.",
+  "tags": "",
+  "storage": [
+    {"name":"intervals.app.js","url":"intervals.app.js"},
+    {"name":"intervals.img","url":"intervals-icon.js","evaluate":true}
+  ]
+},
+{ "id": "planetarium",
+  "name": "Planetarium",
+  "shortName":"Planetarium",
+  "icon": "planetarium.png",
+  "version":"0.02",
+  "description": "Planetarium showing up to 500 stars using the watch location and time",
+  "tags": "",
+  "storage": [
+    {"name":"planetarium.app.js","url":"planetarium.app.js"},
+    {"name":"planetarium.data.csv","url":"planetarium.data.csv"},
+    {"name":"planetarium.settings.js","url":"settings.js"},
+    {"name":"planetarium.img","url":"planetarium-icon.js","evaluate":true}
+  ],
+  "data":[
+    {"name":"planetarium.json"}
+  ]
+},
+{ "id": "tapelauncher",
+  "name": "Tape Launcher",
+  "icon": "icon.png",
+  "version":"0.01",
+  "description": "An App launcher, icons displayed in a horizontal tape, swipe or use buttons",
+  "readme": "README.md",
+  "tags": "tool,system,launcher",
+  "type":"launch",
+  "storage": [
+    {"name":"tapelaunch.app.js","url":"app.js"},
+    {"name":"tapelaunch.img","url":"icon.js","evaluate":true}
+  ]
+},
+{ "id": "oblique",
+  "name": "Oblique Strategies",
+  "icon": "eno.png",
+  "version": "0.01",
+  "description": "Oblique Strategies for creativity. Copied from Brian Eno.",
+  "tags": "tool",
+  "storage": [
+    {"name":"oblique.app.js","url":"app.js"},
+    {"name":"oblique.img","url":"app-icon.js","evaluate":true}
   ]
 },
 { "id": "zclock",

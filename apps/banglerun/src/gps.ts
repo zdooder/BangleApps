@@ -4,59 +4,46 @@ import { ActivityStatus, AppState } from './state';
 
 declare var Bangle: any;
 
+interface GpsEvent {
+  lat: number;
+  lon: number;
+  alt: number;
+  speed: number;
+  hdop: number;
+  fix: number;
+}
+
 const EARTH_RADIUS = 6371008.8;
 const POS_ACCURACY = 2.5;
 const VEL_ACCURACY = 0.05;
 
 function initGps(state: AppState): void {
-  Bangle.on('GPS-raw', (nmea: string) => parseNmea(state, nmea));
+  Bangle.on('GPS', (gps: GpsEvent) => readGps(state, gps));
   Bangle.setGPSPower(1);
 }
 
-function parseCoordinate(coordinate: string): number {
-  const pivot = coordinate.indexOf('.') - 2;
-  const degrees = parseInt(coordinate.substr(0, pivot));
-  const minutes = parseFloat(coordinate.substr(pivot)) / 60;
-  return (degrees + minutes) * Math.PI / 180;
-}
+function readGps(state: AppState, gps: GpsEvent): void {
+  state.lat = gps.lat;
+  state.lon = gps.lon;
+  state.alt = gps.alt;
+  state.vel = gps.speed / 3.6;
+  state.fix = gps.fix;
+  state.dop = gps.hdop;
 
-function parseNmea(state: AppState, nmea: string): void {
-  const tokens = nmea.split(',');
-  const sentence = tokens[0].substr(3, 3);
+  state.gpsValid = state.fix > 0 && state.dop <= 5;
 
-  // FIXME: Bangle.js reports HDOP from GGA - can this be used instead
-  // of manually parsing all of the raw GPS data, which can cause FIFO_FULL
-  // errors?
+  updateGps(state);
+  draw(state);
 
-  switch (sentence) {
-    case 'GGA':
-      state.lat = parseCoordinate(tokens[2]) * (tokens[3] === 'N' ? 1 : -1);
-      state.lon = parseCoordinate(tokens[4]) * (tokens[5] === 'E' ? 1 : -1);
-      state.alt = parseFloat(tokens[9]);
-      break;
-    case 'VTG':
-      state.vel = parseFloat(tokens[7]) / 3.6;
-      break;
-    case 'GSA':
-      state.fix = parseInt(tokens[2]);
-      state.dop = parseFloat(tokens[15]);
-      break;
-    case 'GLL':
-      state.gpsValid = state.fix === 3 && state.dop <= 5;
-      updateGps(state);
-      draw(state);
-      if (state.gpsValid && state.status === ActivityStatus.Running) {
-        updateLog(state);
-      }
-      break;
-    default:
-      break;
+  if (state.gpsValid && state.status === ActivityStatus.Running) {
+    updateLog(state);
   }
 }
 
 function updateGps(state: AppState): void {
   const t = Date.now();
-  const dt = (t - state.t) / 1000;
+  let dt = (t - state.t) / 1000;
+  if (!isFinite(dt)) dt=0;
 
   state.t = t;
   state.dt += dt;
@@ -70,9 +57,11 @@ function updateGps(state: AppState): void {
   }
 
   const r = EARTH_RADIUS + state.alt;
-  const x = r * Math.cos(state.lat) * Math.cos(state.lon);
-  const y = r * Math.cos(state.lat) * Math.sin(state.lon);
-  const z = r * Math.sin(state.lat);
+  const lat = state.lat * Math.PI / 180;
+  const lon = state.lon * Math.PI / 180;
+  const x = r * Math.cos(lat) * Math.cos(lon);
+  const y = r * Math.cos(lat) * Math.sin(lon);
+  const z = r * Math.sin(lat);
   const v = state.vel;
 
   if (!state.x) {
@@ -98,8 +87,8 @@ function updateGps(state: AppState): void {
   const pError = dpMag + state.dop * POS_ACCURACY;
   const vError = dvMag + state.dop * VEL_ACCURACY;
 
-  const pGain = state.pError / (state.pError + pError);
-  const vGain = state.vError / (state.vError + vError);
+  const pGain = (state.pError / (state.pError + pError)) || 0;
+  const vGain = (state.vError / (state.vError + vError)) || 0;
 
   state.x += dx * pGain;
   state.y += dy * pGain;
@@ -108,11 +97,14 @@ function updateGps(state: AppState): void {
   state.pError += (pError - state.pError) * pGain;
   state.vError += (vError - state.vError) * vGain;
 
+/*// we're not currently updating lat/lon with the kalman filter
+  // as it seems not to update them correctly at the moment
+  // and we only use them for logging (where it makes sense to use
+  // raw GPS coordinates)
   const pMag = Math.sqrt(state.x * state.x + state.y * state.y + state.z * state.z);
-
-  state.lat = Math.asin(state.z / pMag) * 180 / Math.PI;
+  state.lat = (Math.asin(state.z / pMag) * 180 / Math.PI) || 0;
   state.lon = (Math.atan2(state.y, state.x) * 180 / Math.PI) || 0;
-  state.alt = pMag - EARTH_RADIUS;
+  state.alt = pMag - EARTH_RADIUS;*/
 
   if (state.status === ActivityStatus.Running) {
     state.distance += dpMag * pGain;
@@ -121,4 +113,4 @@ function updateGps(state: AppState): void {
   }
 }
 
-export { initGps, parseCoordinate, parseNmea, updateGps };
+export { initGps, readGps, updateGps };
